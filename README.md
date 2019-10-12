@@ -13,7 +13,7 @@ This will create a new repository using this one.
 
 ## Prerequisites
 
-* [Golang version 1.11 or later](https://golang.org/doc/install)
+* [Golang version 1.11 or later](https://golang.org/doc/install) (_If you don't plan to use docker for local development_)
 * [Docker](https://docs.docker.com/install)
 * [AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/installing.html)
 * [SAM CLI](https://aws.amazon.com/serverless/sam/)
@@ -55,20 +55,43 @@ cp configs/.env.example configs/.env
 make deploy STAGE=staging
 ```
 
+### Building
+Golang is a statically compiled language, that means in order to run it, you need to build the executable targets
+```
+make build
+```
+
+### Local development
+To invoke the function locally through API Gateway
+```
+make run
+```
+When this command runs successully, you will see the endpoints you can invoke
+
+
+### Deployment
+To deploy the application to your aws account, invoke the following command
+```
+make deploy
+```
+
 ## Make targets
 ```
-make docker_build       Build the docker image to execute make commands locally
-make setup              Create the s3 bucket that will host the artifcats in sandbox
-make lint               Code linter
-make format             Format Code
-make vet                Find errors not caught by the compilers
-make tests              Run unit tests
-make benchmark          Run benchmark tests
-make coverage           Generate coverage report (Doesn't work with docker)
-make build              Build go artifcats
-make deploy             Deploy application code (template.yml) to sandbox
-make run                Run the lambda functions locally
-make logs function=FUNCTION-NAME    Display logs of certain function
-make destroy            Destroy the stacks (resources & application)
-make clean              Delete binaries, coverage reports.
+help            Prints this help screen
+setup           Create the s3 bucket that will host the artifcats in sandbox
+docker_build    Build the docker image to execute make commands locally
+build           Build Go artifcats
+buildf          Build Go artifact for single function (ex: make buildf function={function handler})
+lint            Run linter
+tests           Run benchmark tests
+format          Format code
+vet             Find errors not caught by the compilers
+deploy          Deploy application code (template.yml) to sandbox
+race            Find race condition errors
+benchmark       Run benchmark tests
+coverage        Generate coverage report (Doesn't work with docker)
+run             Run the lambda functions locally
+logs            Display logs of certain function (ex: make logs function=FUNCTION-NAME)
+destroy         Destroy the stacks (resources & application)
+clean           Delete binaries, coverage reports.
 ```
