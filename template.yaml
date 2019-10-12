@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  
+  go-sam-bootstrap
+  SAM Template for go-sam-bootstrap
+
+#####  Globals for Lambda functions #####
+Globals:
+  Function:
+    Timeout: 5
+    Environment:
+      Variables:
+        Region: "eu-west-1"
+
+#####  Input Parameters #####
+Parameters:
+  Stage:
+    Type: String
+    Description: Parameter for getting the deployment stage
+    Default: default
+
+#####  Environment Variables #####
+Mappings:
+  StagesMap:
+    sandbox:
+      VariableName: Value
+    staging:
+      VariableName: Value
+    production:
+      VariableName: Value
+
+
+#####  Template Conditions #####
+Conditions: 
+  CreateSandboxResources: !Equals [ !Ref Stage, sandbox ]
+
+Resources:
+#####  Lambda Fuctions #####
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./build/package/
+      Handler: hello-world
+      Runtime: go1.x
+      MemorySize: 128
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /hello-world
+            Method: GET
+
+
+Outputs:
+  HelloWorldApi:
+    Description: "API Gateway endpoint URL to print Hello, World!"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello-world/"

@@ -1,0 +1,17 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "1.0",
+    "title" : "ttyytt"
+  },
+  "host" : "p8q7421a67.execute-api.eu-west-1.amazonaws.com",
+  "basePath" : "/Prod",
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/hello" : {
+      "get" : {
+        "responses" : { } 
+      }
+    }
+  }
+}
