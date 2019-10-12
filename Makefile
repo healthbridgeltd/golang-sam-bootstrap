@@ -2,7 +2,7 @@
 include ./configs/.env
 export $(shell sed 's/=.*//' ./configs/.env)
 
-AWS_PROFILE ?= default
+AWS_PROFILE ?= sandbox
 APP_TEMPLATE = "template"
 S3_BUCKET = $(APP_NAME)-$(AWS_PROFILE)-$(USERNAME)
 
@@ -14,14 +14,12 @@ endif
 
 setup:
 	aws s3 mb s3://$(S3_BUCKET) --profile $(AWS_PROFILE)
-	sed 's/golang-sam-bootstrap/$(APP_NAME)/g' go.mod 
-	sed 's/golang-sam-bootstrap/$(APP_NAME)/g' template.yaml
 
 build: tests
 	${DOCKER} scripts/build.sh 
 
 buildf: tests
-${DOCKER} scripts/build-function.sh
+	${DOCKER} scripts/build-function.sh
 
 lint:
 	${DOCKER} golint -set_exit_status ./src/... 
