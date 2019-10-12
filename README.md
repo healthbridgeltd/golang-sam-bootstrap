@@ -38,6 +38,11 @@ region = eu-west-1
 ```
 Where AccessKey and SecretAccessKey are the keys for the user you created in the console.
 
+### Build docker container
+```
+make docker_build
+```
+
 ### Configure project defaults
 
 - Copy the `configs/.env.example` variable file to `configs/.env` and change the project name, username
