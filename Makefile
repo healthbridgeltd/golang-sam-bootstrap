@@ -7,7 +7,7 @@ APP_TEMPLATE = "template"
 S3_BUCKET = $(APP_NAME)-$(AWS_PROFILE)-$(USERNAME)
 
 # Set this variable in .env if you don't want to use docker locally  
-ifneq ($(ENVIRONMENT),local)
+ifneq ($(USE_DOCKER),no)
 	PROJECT_DIR ?=  $(shell pwd)
 	DOCKER = docker run -t -v ${PROJECT_DIR}:/app --mount source=go-build-cache,target=/root/.cache --mount source=go-cache,target=/go $(APP_NAME):latest 
 endif
