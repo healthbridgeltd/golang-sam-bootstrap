@@ -28,8 +28,9 @@ help:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
-## Create the s3 bucket that will host the artifcats in sandbox
+## Create the s3 bucket that will host the artifcats in aws environment
 setup:
+	aws configure --profile $(AWS_PROFILE)
 	aws s3 mb s3://$(S3_BUCKET) --profile $(AWS_PROFILE)
 
 ## Build the docker image to execute make commands locally
@@ -39,8 +40,7 @@ docker_build:
 	docker build -f build/ci/Dockerfile . -t $(APP_NAME)
 
 ## Build Go artifcats
-build: 	
-	tests
+build: tests
 	${DOCKER} scripts/build.sh 
 
 ## Build Go artifact for single function (ex: make buildf function={function handler})
@@ -64,7 +64,7 @@ format:
 vet:
 	${DOCKER} go vet ./src/...
 
-## Deploy application code (template.yml) to sandbox
+## Deploy application code (template.yml) to aws environment
 deploy:			
 	scripts/deploy.sh $(AWS_PROFILE) $(S3_BUCKET) $(APP_NAME) ${APP_TEMPLATE}
 
