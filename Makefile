@@ -28,6 +28,9 @@ help:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
+dummy:
+	echo ""
+
 ## Create the s3 bucket that will host the artifcats in aws environment
 setup:
 	aws configure --profile $(AWS_PROFILE)
@@ -40,13 +43,8 @@ docker_build:
 	docker build -f build/ci/Dockerfile . -t $(APP_NAME)
 
 ## Build Go artifcats
-build: tests
-	${DOCKER} scripts/build.sh 
-
-## Build Go artifact for single function (ex: make buildf function={function handler})
-buildf: 
-	tests
-	${DOCKER} scripts/build-function.sh
+build: dummy
+	sam build --parallel
 
 ## Run linter
 lint:
@@ -66,7 +64,7 @@ vet:
 
 ## Deploy application code (template.yml) to aws environment
 deploy:			
-	scripts/deploy.sh $(AWS_PROFILE) $(S3_BUCKET) $(APP_NAME) ${APP_TEMPLATE}
+	scripts/deploy.sh $(AWS_PROFILE) $(S3_BUCKET) $(APP_NAME) ${APP_TEMPLATE} ${USERNAME}
 
 ## Find race condition errors
 race:

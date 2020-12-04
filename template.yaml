@@ -40,7 +40,7 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./build/package/
+      CodeUri: ./src/cmd/lambdas/hello-world/
       Handler: hello-world
       Runtime: go1.x
       MemorySize: 128

@@ -26,3 +26,6 @@ build/templates/*
 # IDEs
 .vscode/
 .idea/
+
+# SAM
+.aws-sam
